@@ -97,13 +97,25 @@
     </resource-ref>
     ```
 
-1. Maven `pom.xml` 需要加入 spring-web/spring-orm dependency
+1. Maven `pom.xml` 需要加入 spring-web/spring-tx/spring-jdbc/spring-orm dependency
 
     ```sh
     # 檔案位置: pom.xml
     <dependency>
         <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>5.1.9.RELEASE</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>5.1.9.RELEASE</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
         <version>5.1.9.RELEASE</version>
     </dependency>
 
@@ -147,9 +159,6 @@
     # 檔案位置: src > main > java > Hibernate.cfg.xml
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
-
-    # 需要 mapping 的 ORM Class(所有 @Entity 都需要註冊)
-    <mapping class="model.Employee"/>
     ```
 
 1. 建立 Spring 所支援的 SessionFactory
@@ -168,6 +177,7 @@
     <bean id="sessionFactory"
         class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
+        <property name="packagesToScan" value="model"></property>
         <property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
     </bean>
 
